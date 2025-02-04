@@ -11,4 +11,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./folder/folder.page').then((m) => m.FolderPage),
   },
+  {
+    path: 'images',
+    loadComponent: () =>
+      import('./images/images.page').then((m) => m.ImagesPage),
+  },
 ];
