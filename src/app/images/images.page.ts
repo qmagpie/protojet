@@ -29,6 +29,7 @@ import {
   imageSharp,
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { ImageResizeService } from '../image-resize.service';
 
 @Component({
   selector: 'app-images',
@@ -55,6 +56,7 @@ import { addIcons } from 'ionicons';
 export class ImagesPage implements OnInit {
   elementRef = inject(ElementRef);
   cdr = inject(ChangeDetectorRef);
+  imageService = inject(ImageResizeService);
 
   galleryFile: File | undefined = undefined;
   galleryClearable = true;
@@ -116,8 +118,17 @@ export class ImagesPage implements OnInit {
 
       this.cameraImagePreview = null;
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onload = async () => {
         this.cameraImagePreview = reader.result; // base64 data URL
+        // try {
+        //   this.cameraImagePreview = await this.imageService.resizeImage(
+        //     file,
+        //     100,
+        //     100
+        //   );
+        // } catch (error) {
+        //   console.error('Error resizing image', error);
+        // }
         this.cdr.detectChanges();
       };
       reader.readAsDataURL(file);
