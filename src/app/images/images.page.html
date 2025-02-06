@@ -8,28 +8,86 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">images</ion-title>
     </ion-toolbar>
   </ion-header>
 
-
   <ion-list lines="full">
-    <ion-item/>
-    <ion-item>
-      <ion-label>Gallery</ion-label>
+    <ion-item button="true" detail="false">
+      <ion-icon
+        slot="start"
+        color="primary"
+        ios="image-outline"
+        md="image-sharp"
+        size="large"
+        (click)="galleryOpen()"
+      ></ion-icon>
+
+      <ion-label (click)="galleryOpen()">
+        <div class="input-label">Galerie</div>
+        <ion-note>{{ galleryFile?.name || '&nbsp;'}}</ion-note>
+        <input
+          id="gallery-input"
+          type="file"
+          accept="image/*"
+          capture
+          (change)="galleryInputChanged($event)"
+          style="display: none"
+        />
+      </ion-label>
+      @if (galleryFile) {
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="dark"
+        (click)="galleryClearInput()"
+      >
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      }
     </ion-item>
-    <ion-item>
-      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
-    </ion-item>
-    <ion-item>
-      <ion-label>Camera</ion-label>
-    </ion-item>
-    <ion-item>
-      <input type="file" accept="image/*" capture (change)="onFileSelected($event)" />
+
+    <ion-item button="true" detail="false">
+      <ion-icon
+        slot="start"
+        color="primary"
+        ios="camera-outline"
+        md="camera-sharp"
+        size="large"
+        (click)="cameraOpen()"
+      ></ion-icon>
+
+      <ion-label (click)="cameraOpen()">
+        <div class="input-label">Fotoaparát</div>
+        <ion-note>{{ cameraFile?.name || '&nbsp;'}}</ion-note>
+        <input
+          id="camera-input"
+          type="file"
+          accept="image/*"
+          capture
+          (change)="cameraInputChanged($event)"
+          style="display: none"
+        />
+      </ion-label>
+      @if (cameraFile) {
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="dark"
+        (click)="cameraClearInput()"
+      >
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      }
     </ion-item>
   </ion-list>
 
+  <!-- @if (galleryImagePreview) {
+  <img [src]="galleryImagePreview" alt="Preview of selected image" />
+  }
+  @if (cameraImagePreview) {
+  <img [src]="cameraImagePreview" alt="Preview of selected image" />
+  } -->
 </ion-content>
