@@ -27,7 +27,7 @@
 
       <ion-label (click)="galleryOpen()">
         <div class="input-label">Galerie</div>
-        <ion-note>{{ galleryFile?.name || '&nbsp;'}}</ion-note>
+        <ion-note>{{ galleryFile?.name || ''}}</ion-note>
         <input
           id="gallery-input"
           type="file"
@@ -43,7 +43,7 @@
         color="dark"
         (click)="galleryClearInput()"
       >
-        <ion-icon slot="icon-only" name="close"></ion-icon>
+        <ion-icon slot="icon-only" name="close" size="larger"></ion-icon>
       </ion-button>
       }
     </ion-item>
@@ -60,7 +60,7 @@
 
       <ion-label (click)="cameraOpen()">
         <div class="input-label">Fotoaparát</div>
-        <ion-note>{{ cameraFile?.name || '&nbsp;'}}</ion-note>
+        <ion-note>{{ cameraFile?.name || ''}}</ion-note>
         <input
           id="camera-input"
           type="file"
