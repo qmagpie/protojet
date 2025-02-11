@@ -13,7 +13,7 @@
       <div class="input-label">{{ label() }}</div>
       <ion-note>{{ file?.name || "" }}</ion-note>
       <input
-        id="image-input"
+        #imageInput
         type="file"
         accept="image/*"
         (change)="onInputChanged($event)"

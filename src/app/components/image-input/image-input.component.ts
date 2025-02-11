@@ -1,4 +1,11 @@
-import { Component, ElementRef, inject, input, output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
 import {
   IonButton,
   IonIcon,
@@ -31,6 +38,7 @@ export class ImageInputComponent {
   label = input.required<string>();
   flavor = input.required<ImageInputFlavor>();
   fileChanged = output<File>();
+  imageInput = viewChild<HTMLInputElement>('imageInput');
 
   file: File | undefined = undefined;
   clearable = true;
@@ -51,8 +59,7 @@ export class ImageInputComponent {
   }
 
   onOpen() {
-    const imageInput =
-      this.elementRef.nativeElement.querySelector('#image-input');
+    const imageInput = this.imageInput();
     if (imageInput) {
       imageInput.click();
     }
