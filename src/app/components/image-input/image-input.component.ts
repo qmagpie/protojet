@@ -67,6 +67,10 @@ export class ImageInputComponent {
 
   onClearInput() {
     this.file = undefined;
+    const imageInput: HTMLInputElement = this.imageInput()?.nativeElement;
+    if (imageInput) {
+      imageInput.value = '';
+    }
     this.fileChanged.emit(this.file);
   }
 }
