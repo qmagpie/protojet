@@ -5,10 +5,10 @@
     [ios]="(flavor() === 'Camera' ? 'camera' : 'image') + '-outline'"
     [md]="(flavor() === 'Camera' ? 'camera' : 'image') + '-sharp'"
     size="large"
-    (click)="onOpen()"
+    (click)="onOpen($event)"
   ></ion-icon>
 
-  <ion-label (click)="onOpen()">
+  <ion-label>
     <div class="input-label">{{ label() }}</div>
     <ion-note>{{ file?.name || "" }}</ion-note>
     <input
@@ -17,7 +17,6 @@
       accept="image/*"
       [attr.capture]="flavor() === 'Camera' ? 'environment' : null"
       (change)="onInputChanged($event)"
-      style="display: none"
     />
   </ion-label>
   @if (file) {
