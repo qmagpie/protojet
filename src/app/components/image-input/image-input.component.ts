@@ -30,15 +30,15 @@ type ImageInputFlavor = 'Gallery' | 'Camera';
   templateUrl: './image-input.component.html',
   styleUrls: ['./image-input.component.scss'],
   standalone: true,
-  imports: [IonButton, IonIcon, IonItem, IonLabel, IonList, IonNote],
+  imports: [IonButton, IonIcon, IonItem, IonLabel, IonNote],
 })
 export class ImageInputComponent {
   elementRef = inject(ElementRef);
 
   label = input.required<string>();
   flavor = input.required<ImageInputFlavor>();
-  fileChanged = output<File>();
-  imageInput = viewChild<HTMLInputElement>('imageInput');
+  fileChanged = output<File | undefined>();
+  imageInput = viewChild<ElementRef>('imageInput');
 
   file: File | undefined = undefined;
   clearable = true;
@@ -59,7 +59,7 @@ export class ImageInputComponent {
   }
 
   onOpen() {
-    const imageInput = this.imageInput();
+    const imageInput = this.imageInput()?.nativeElement;
     if (imageInput) {
       imageInput.click();
     }
@@ -67,5 +67,6 @@ export class ImageInputComponent {
 
   onClearInput() {
     this.file = undefined;
+    this.fileChanged.emit(this.file);
   }
 }

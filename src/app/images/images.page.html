@@ -14,7 +14,8 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-image-input
+  <ion-list lines="full">
+    <app-image-input
     flavor="Gallery"
     label="Galerie"
     (fileChanged)="galleryInputChanged($event)"
@@ -24,6 +25,7 @@
     label="Fotoaparát"
     (fileChanged)="cameraInputChanged($event)"
   />
+  </ion-list>
 
   @if (galleryImagePreview) {
   <img [src]="galleryImagePreview" alt="Preview of selected image" />

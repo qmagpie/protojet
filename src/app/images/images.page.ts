@@ -5,7 +5,6 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonItem,
   IonList,
   IonMenuButton,
   IonTitle,
@@ -24,7 +23,6 @@ import { ImageResizeService } from '../image-resize.service';
     IonButtons,
     IonContent,
     IonHeader,
-    IonItem,
     IonList,
     IonMenuButton,
     IonTitle,
@@ -47,7 +45,7 @@ export class ImagesPage implements OnInit {
 
   ngOnInit() {}
 
-  galleryInputChanged(file: File) {
+  galleryInputChanged(file: File | undefined) {
     if (file) {
       this.galleryFile = file;
       this.galleryImagePreview = null;
@@ -63,10 +61,14 @@ export class ImagesPage implements OnInit {
       //   (res) => console.log('Upload success!', res),
       //   (err) => console.error('Upload error!', err)
       // );
+    } else {
+      this.galleryFile = undefined;
+      this.galleryImagePreview = null;
+      this.cdr.detectChanges();
     }
   }
 
-  cameraInputChanged(file: File) {
+  cameraInputChanged(file: File | undefined) {
     if (file) {
       this.cameraFile = file;
       this.cameraImagePreview = null;
@@ -91,6 +93,10 @@ export class ImagesPage implements OnInit {
       //   (res) => console.log('Upload success!', res),
       //   (err) => console.error('Upload error!', err)
       // );
+    } else {
+      this.cameraFile = undefined;
+      this.cameraImagePreview = null;
+      this.cdr.detectChanges();
     }
   }
 }
