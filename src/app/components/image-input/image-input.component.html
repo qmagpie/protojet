@@ -15,6 +15,7 @@
       #imageInput
       type="file"
       accept="image/*"
+      [attr.capture]="flavor() === 'Camera' ? 'environment' : null"
       (change)="onInputChanged($event)"
       style="display: none"
     />
