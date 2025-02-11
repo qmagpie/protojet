@@ -61,7 +61,7 @@ export class ImageInputComponent {
   onOpen() {
     const imageInput = this.imageInput()?.nativeElement;
     if (imageInput) {
-      imageInput.click();
+      setTimeout(() => imageInput.click(), 100);
     }
   }
 
