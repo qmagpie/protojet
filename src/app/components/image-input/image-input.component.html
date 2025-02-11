@@ -1,0 +1,29 @@
+<ion-list lines="full">
+  <ion-item button="true" detail="false">
+    <ion-icon
+      slot="start"
+      color="primary"
+      [ios]="(flavor() === 'Camera' ? 'camera' : 'image') + '-outline'"
+      [md]="(flavor() === 'Camera' ? 'camera' : 'image') + '-sharp'"
+      size="large"
+      (click)="onOpen()"
+    ></ion-icon>
+
+    <ion-label (click)="onOpen()">
+      <div class="input-label">{{ label() }}</div>
+      <ion-note>{{ file?.name || "" }}</ion-note>
+      <input
+        id="image-input"
+        type="file"
+        accept="image/*"
+        (change)="onInputChanged($event)"
+        style="display: none"
+      />
+    </ion-label>
+    @if (file) {
+    <ion-button slot="end" fill="clear" color="dark" (click)="onClearInput()">
+      <ion-icon slot="icon-only" name="close" size="larger"></ion-icon>
+    </ion-button>
+    }
+  </ion-item>
+</ion-list>

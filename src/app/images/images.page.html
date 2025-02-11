@@ -14,79 +14,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list lines="full">
-    <ion-item button="true" detail="false">
-      <ion-icon
-        slot="start"
-        color="primary"
-        ios="image-outline"
-        md="image-sharp"
-        size="large"
-        (click)="galleryOpen()"
-      ></ion-icon>
-
-      <ion-label (click)="galleryOpen()">
-        <div class="input-label">Galerie</div>
-        <ion-note>{{ galleryFile?.name || ''}}</ion-note>
-        <input
-          id="gallery-input"
-          type="file"
-          accept="image/*"
-          (change)="galleryInputChanged($event)"
-          style="display: none"
-        />
-      </ion-label>
-      @if (galleryFile) {
-      <ion-button
-        slot="end"
-        fill="clear"
-        color="dark"
-        (click)="galleryClearInput()"
-      >
-        <ion-icon slot="icon-only" name="close" size="larger"></ion-icon>
-      </ion-button>
-      }
-    </ion-item>
-
-    <ion-item button="true" detail="false">
-      <ion-icon
-        slot="start"
-        color="primary"
-        ios="camera-outline"
-        md="camera-sharp"
-        size="large"
-        (click)="cameraOpen()"
-      ></ion-icon>
-
-      <ion-label (click)="cameraOpen()">
-        <div class="input-label">Fotoaparát</div>
-        <ion-note>{{ cameraFile?.name || ''}}</ion-note>
-        <input
-          id="camera-input"
-          type="file"
-          accept="image/*"
-          capture
-          (change)="cameraInputChanged($event)"
-          style="display: none"
-        />
-      </ion-label>
-      @if (cameraFile) {
-      <ion-button
-        slot="end"
-        fill="clear"
-        color="dark"
-        (click)="cameraClearInput()"
-      >
-        <ion-icon slot="icon-only" name="close"></ion-icon>
-      </ion-button>
-      }
-    </ion-item>
-  </ion-list>
+  <app-image-input
+    flavor="Gallery"
+    label="Galerie"
+    (fileChanged)="galleryInputChanged($event)"
+  />
+  <app-image-input
+    flavor="Camera"
+    label="Fotoaparát"
+    (fileChanged)="cameraInputChanged($event)"
+  />
 
   @if (galleryImagePreview) {
   <img [src]="galleryImagePreview" alt="Preview of selected image" />
-  }
-  @if (cameraImagePreview) {
+  } @if (cameraImagePreview) {
   <img [src]="cameraImagePreview" alt="Preview of selected image" />
   }
 </ion-content>
