@@ -16,4 +16,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./images/images.page').then((m) => m.ImagesPage),
   },
+  {
+    path: 'signature',
+    loadComponent: () =>
+      import('./signature/signature.page').then((m) => m.SignaturePage),
+  },
 ];
