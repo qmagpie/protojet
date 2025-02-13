@@ -16,20 +16,54 @@
 
   <ion-list lines="full">
     <app-image-input
-    flavor="Gallery"
-    label="Galerie"
-    (fileChanged)="galleryInputChanged($event)"
-  />
-  <app-image-input
-    flavor="Camera"
-    label="Fotoaparát"
-    (fileChanged)="cameraInputChanged($event)"
-  />
+      #galleryImageInput
+      flavor="Gallery"
+      label="Galerie"
+      (fileChanged)="galleryInputChanged($event)"
+    />
+    <app-image-input
+      #cameraImageInput
+      flavor="Camera"
+      label="Fotoaparát"
+      (fileChanged)="cameraInputChanged($event)"
+    />
   </ion-list>
 
-  @if (galleryImagePreview) {
-  <img [src]="galleryImagePreview" alt="Preview of selected image" />
-  } @if (cameraImagePreview) {
-  <img [src]="cameraImagePreview" alt="Preview of selected image" />
+  <div class="ion-padding">
+    @if (selectedImagePreview) {
+    <img [src]="selectedImagePreview" alt="Preview of selected image" />
+    }
+  </div>
+
+  <ion-list lines="full" class="post-list">
+    <!-- <ion-item>
+      <ion-toggle
+        [disabled]="!galleryFile && !cameraFile"
+        [value]="useFormData()"
+        (ionChange)="useFormData.set($event.detail.value)"
+        >POST via FormData</ion-toggle
+      >
+    </ion-item> -->
+    <ion-item>
+      <ion-input
+        label="post api"
+        labelPlacement="stacked"
+        placeholder="Enter the URL of the POST API"
+        [disabled]="!galleryFile && !cameraFile"
+        [value]="postApi()"
+        (ionChange)="postApi.set($event.detail.value ?? '')"
+      ></ion-input>
+    </ion-item>
+  </ion-list>
+  @if (postApi()) {
+  <div class="ion-padding">
+    <ion-button
+      size="default"
+      expand="block"
+      [disabled]="!galleryFile && !cameraFile"
+      (click)="onPost()"
+      >POST image</ion-button
+    >
+  </div>
   }
 </ion-content>

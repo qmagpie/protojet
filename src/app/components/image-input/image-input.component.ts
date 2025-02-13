@@ -74,4 +74,8 @@ export class ImageInputComponent {
     }
     this.fileChanged.emit(this.file);
   }
+
+  clear() {
+    this.onClearInput();
+  }
 }
