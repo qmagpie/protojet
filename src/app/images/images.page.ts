@@ -120,7 +120,7 @@ export class ImagesPage implements OnInit {
         body.imageFileData = resizedGalleryFileData.split('base64,')[1];
       }
 
-      this.http.post('/api/Image/Upload', body).subscribe(
+      this.http.post(this.postApi(), body).subscribe(
         (res) => console.log('Upload success!', res),
         (err) => console.error('Upload error!', err)
       );
