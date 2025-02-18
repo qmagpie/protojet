@@ -117,7 +117,8 @@ export class ImagesPage implements OnInit {
           1024,
           1024
         );
-        body.imageFileData = resizedGalleryFileData.split('base64,')[1];
+        // body.imageFileData = resizedGalleryFileData.split('base64,')[1];
+        body.imageFileData = resizedGalleryFileData;
       }
 
       this.http.post(this.postApi(), body).subscribe(

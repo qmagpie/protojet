@@ -2,19 +2,25 @@ import {
   AfterContentInit,
   Component,
   ElementRef,
+  inject,
   viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import {
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonMenuButton,
+  IonIcon,
   IonTitle,
   IonToolbar,
+  MenuController,
+  NavController,
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { close } from 'ionicons/icons';
+
 import SignaturePad from 'signature_pad';
 
 @Component({
@@ -27,11 +33,11 @@ import SignaturePad from 'signature_pad';
     IonButtons,
     IonContent,
     IonHeader,
-    IonMenuButton,
+    IonIcon,
     IonTitle,
     IonToolbar,
     CommonModule,
-    FormsModule,
+    HttpClientModule,
   ],
 })
 export class SignaturePage implements AfterContentInit {
@@ -39,16 +45,27 @@ export class SignaturePage implements AfterContentInit {
     viewChild.required<ElementRef<HTMLCanvasElement>>('signatureCanvas');
   signaturePad!: SignaturePad;
 
-  constructor() {}
+  private http = inject(HttpClient);
+  private menuController = inject(MenuController);
+  private navCtrl = inject(NavController);
 
-  // ionViewWillEnter() {
-  //   this.resizeCanvas();
-  // }
+  constructor() {
+    addIcons({ close });
+  }
+
+  ionViewWillEnter() {
+    this.menuController.enable(false);
+    this.resizeCanvas();
+  }
+
+  ionViewDidLeave() {
+    this.menuController.enable(true);
+  }
 
   ngAfterContentInit(): void {
     const canvasEl: HTMLCanvasElement = this.signatureCanvas().nativeElement;
     this.signaturePad = new SignaturePad(canvasEl, {
-      backgroundColor: '#ffffff',
+      backgroundColor: '#fff',
       penColor: 'rgb(0, 0, 0)',
     });
   }
@@ -66,8 +83,23 @@ export class SignaturePage implements AfterContentInit {
     this.signaturePad.clear();
   }
 
-  saveSignature() {
+  async saveSignature() {
     const data = this.signaturePad.toDataURL();
-    console.log(data);
+    // console.log(data);
+
+    const body = {
+      signature: data,
+    };
+
+    this.http
+      .post('https://devel.jetsoft.cz:8338/api/signature', body)
+      .subscribe(
+        (res) => console.log('Upload success!', res),
+        (err) => console.error('Upload error!', err)
+      );
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
 }
