@@ -1,0 +1,33 @@
+.signature {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .signature-canvas-container {
+    flex: 1;
+    border: 2px solid #ccc;
+    background-color: #fff;
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .buttons-wrapper {
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .signature {
+    width: 600px;
+    height: 400px;
+    margin-top: 2em;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}

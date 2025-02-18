@@ -13,4 +13,14 @@
       <ion-title size="large">signature</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="signature">
+    <div class="signature-canvas-container">
+      <canvas #signatureCanvas></canvas>
+    </div>
+    <div class="ion-padding buttons-wrapper">
+      <ion-button color="dark" (click)="clearSignature()">Clear</ion-button>
+      <ion-button color="primary" (click)="saveSignature()">Save</ion-button>
+    </div>
+  </div>
 </ion-content>
