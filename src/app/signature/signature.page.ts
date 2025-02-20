@@ -28,6 +28,7 @@ import SignaturePad from 'signature_pad';
   templateUrl: './signature.page.html',
   styleUrls: ['./signature.page.scss'],
   standalone: true,
+  host: { '(window:resize)': 'onResize($event)' },
   imports: [
     IonButton,
     IonButtons,
@@ -68,6 +69,10 @@ export class SignaturePage implements AfterContentInit {
       backgroundColor: '#fff',
       penColor: 'rgb(0, 0, 0)',
     });
+  }
+
+  onResize() {
+    this.resizeCanvas();
   }
 
   private resizeCanvas() {

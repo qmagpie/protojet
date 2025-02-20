@@ -1,27 +1,26 @@
 .signature {
-  height: 99%;
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 
   .signature-canvas-container {
-    flex: 1;
-    
+
     canvas {
       border: 2px solid #ccc;
       background-color: #fff;
       width: 100%;
-      height: 100%;
+      height: calc(100vh - 140px);
     }
   }
 
   .buttons-wrapper {
     display: flex;
     justify-content: end;
+    padding: 8px;
     gap: 1rem;
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 769px) and  (min-height: 769px) {
   .signature {
     width: 600px;
     height: 400px;
@@ -29,5 +28,12 @@
     margin-inline: auto;
     display: flex;
     flex-direction: column;
+
+    .signature-canvas-container {
+
+      canvas {
+        height: 300px;
+      }
+    }
   }
 }

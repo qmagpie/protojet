@@ -8,18 +8,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">signature</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+<ion-content>
   <div class="signature">
     <div class="signature-canvas-container">
       <canvas #signatureCanvas></canvas>
     </div>
-    <div class="ion-padding buttons-wrapper">
+    <div class="buttons-wrapper">
       <ion-button color="dark" (click)="clearSignature()">Clear</ion-button>
       <ion-button color="primary" (click)="saveSignature()">Save</ion-button>
     </div>
