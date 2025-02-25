@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header #header>
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-button (click)="goBack()">
@@ -13,7 +13,7 @@
     <div class="signature-canvas-container">
       <canvas #signatureCanvas></canvas>
     </div>
-    <div class="buttons-wrapper">
+    <div class="buttons-wrapper" #buttons>
       <ion-button color="dark" (click)="clearSignature()">Clear</ion-button>
       <ion-button color="primary" (click)="saveSignature()">Save</ion-button>
     </div>

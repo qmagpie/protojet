@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   inject,
+  ViewChild,
   viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -42,10 +43,16 @@ import SignaturePad from 'signature_pad';
   ],
 })
 export class SignaturePage implements AfterContentInit {
+  //@ViewChild('header', { read: ElementRef }) header!: ElementRef;
+  header = viewChild.required('header', { read: ElementRef });
+  //@ViewChild('buttons') buttons!: ElementRef;
+  buttons = viewChild.required('buttons', { read: ElementRef });
+
   signatureCanvas =
     viewChild.required<ElementRef<HTMLCanvasElement>>('signatureCanvas');
   signaturePad!: SignaturePad;
 
+  private elementRef = inject(ElementRef);
   private http = inject(HttpClient);
   private menuController = inject(MenuController);
   private navCtrl = inject(NavController);
@@ -76,6 +83,17 @@ export class SignaturePage implements AfterContentInit {
   }
 
   private resizeCanvas() {
+    const pageEl = this.elementRef.nativeElement;
+    const headerHeight = this.header()?.nativeElement?.offsetHeight ?? 0;
+    const buttonsHeight = this.buttons()?.nativeElement?.offsetHeight ?? 0;
+    console.log({ headerHeight, buttonsHeight });
+    if (headerHeight > 0 && buttonsHeight > 0) {
+      pageEl.style.setProperty(
+        '--chrome-height',
+        `${headerHeight + buttonsHeight + 8}px`
+      );
+    }
+
     const canvasEl: HTMLCanvasElement = this.signatureCanvas().nativeElement;
     let ratio = Math.max(window.devicePixelRatio || 1, 1);
     canvasEl.width = canvasEl.offsetWidth * ratio;
