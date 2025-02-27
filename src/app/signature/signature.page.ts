@@ -29,7 +29,10 @@ import SignaturePad from 'signature_pad';
   templateUrl: './signature.page.html',
   styleUrls: ['./signature.page.scss'],
   standalone: true,
-  host: { '(window:resize)': 'onResize($event)' },
+  host: {
+    '(window:resize)': 'onResize($event)',
+    '(window:orientationchange)': 'onResize($event)',
+  },
   imports: [
     IonButton,
     IonButtons,
@@ -78,7 +81,8 @@ export class SignaturePage implements AfterContentInit {
     });
   }
 
-  onResize() {
+  onResize(event: Event) {
+    // console.log('event:', event.type);
     this.resizeCanvas();
   }
 
@@ -86,7 +90,7 @@ export class SignaturePage implements AfterContentInit {
     const pageEl = this.elementRef.nativeElement;
     const headerHeight = this.header()?.nativeElement?.offsetHeight ?? 0;
     const buttonsHeight = this.buttons()?.nativeElement?.offsetHeight ?? 0;
-    console.log({ headerHeight, buttonsHeight });
+    // console.log({ headerHeight, buttonsHeight });
     if (headerHeight > 0 && buttonsHeight > 0) {
       pageEl.style.setProperty(
         '--chrome-height',
