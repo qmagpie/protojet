@@ -13,10 +13,9 @@
       background-color: #fff;
       width: 100%;
 
-      height: calc(100vh - var(--chrome-height));
+      // height: calc(100vh - var(--chrome-height));
 
-      // height: calc(100dvh - var(--chrome-height));
-
+      height: calc(100dvh - var(--chrome-height));
     }
   }
 
