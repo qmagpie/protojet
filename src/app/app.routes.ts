@@ -21,4 +21,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./signature/signature.page').then((m) => m.SignaturePage),
   },
+  {
+    path: 'scan',
+    loadComponent: () => import('./scan/scan.page').then((m) => m.ScanPage),
+  },
 ];

@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>scan</ion-title>
+    <ion-buttons slot="end">
+      @if (html5Qrcode || html5QrcodeScanner) {
+        <ion-button (click)="closeScan()">
+          <ion-icon name="close" size="large"></ion-icon>
+        </ion-button>
+      }
+      <ion-button (click)="scan()">
+        <ion-icon name="scan" size="large"></ion-icon>
+      </ion-button>
+      <ion-button (click)="scan2()">
+        <ion-icon name="scan-circle" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">scan</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div id="reader" class="ion-padding" #reader></div>
+  <div id="output" class="ion-padding">
+    <strong>{{ scannedText }}</strong>
+    @if (scannedResult) {
+      <p>{{ scannedResult | json }}</p>
+    }
+  </div>  
+</ion-content>
