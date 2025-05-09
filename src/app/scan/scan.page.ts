@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -40,6 +40,8 @@ export class ScanPage implements OnInit {
   scannedText: string = '';
   scannedResult: any = null;
 
+  private ngZone = inject(NgZone);
+
   constructor() {
     addIcons({ close, scan, scanCircle });
   }
@@ -49,19 +51,21 @@ export class ScanPage implements OnInit {
   scan() {
     console.log('Scan 1 button clicked!');
 
-    this.html5QrcodeScanner = new Html5QrcodeScanner(
-      'reader',
-      { fps: 10, qrbox: 250 },
-      false
-    );
-
     this.scannedText = '';
     this.scannedResult = null;
 
-    this.html5QrcodeScanner.render(
-      this.onScanSuccess.bind(this),
-      this.onScanError.bind(this)
-    );
+    this.ngZone.runOutsideAngular(() => {
+      this.html5QrcodeScanner = new Html5QrcodeScanner(
+        'reader',
+        { fps: 10, qrbox: 250 },
+        false
+      );
+
+      this.html5QrcodeScanner.render(
+        this.onScanSuccess.bind(this),
+        this.onScanError.bind(this)
+      );
+    });
   }
 
   scan2() {
@@ -70,48 +74,56 @@ export class ScanPage implements OnInit {
     this.scannedText = '';
     this.scannedResult = null;
 
-    this.html5Qrcode = new Html5Qrcode('reader');
-    this.html5Qrcode.start(
-      { facingMode: 'environment' },
-      { fps: 10, qrbox: 250 },
-      this.onScanSuccess2.bind(this),
-      this.onScanError.bind(this)
-    );
+    this.ngZone.runOutsideAngular(() => {
+      this.html5Qrcode = new Html5Qrcode('reader');
+      this.html5Qrcode.start(
+        { facingMode: 'environment' },
+        { fps: 10, qrbox: 250 },
+        this.onScanSuccess2.bind(this),
+        this.onScanError.bind(this)
+      );
+    });
   }
 
   closeScan() {
-    if (this.html5Qrcode) {
-      this.html5Qrcode.stop();
-      this.html5Qrcode = undefined;
-    }
-    if (this.html5QrcodeScanner) {
-      this.html5QrcodeScanner.clear();
-      this.html5QrcodeScanner = undefined;
-    }
+    this.ngZone.runOutsideAngular(() => {
+      if (this.html5Qrcode) {
+        this.html5Qrcode.stop();
+        this.html5Qrcode = undefined;
+      }
+      if (this.html5QrcodeScanner) {
+        this.html5QrcodeScanner.clear();
+        this.html5QrcodeScanner = undefined;
+      }
+    });
   }
 
   onScanSuccess(decodedText: any, decodedResult: any) {
     // Handle on success condition with the decoded text or result.
     console.log(`Scan result: ${decodedText}`, decodedResult);
     this.beepScannerSound();
-    // setTimeout(() => {
-    this.scannedText = decodedText;
-    this.scannedResult = decodedResult;
-    // }, 100);
+    this.ngZone.run(() => {
+      this.scannedText = decodedText;
+      this.scannedResult = decodedResult;
+    });
     this.html5QrcodeScanner.clear();
-    this.html5QrcodeScanner = undefined;
+    this.ngZone.run(() => {
+      this.html5QrcodeScanner = undefined;
+    });
   }
 
   onScanSuccess2(decodedText: any, decodedResult: any) {
     // Handle on success condition with the decoded text or result.
     console.log(`Scan result: ${decodedText}`, decodedResult);
     this.beepScannerSound();
-    setTimeout(() => {
+    this.ngZone.run(() => {
       this.scannedText = decodedText;
       this.scannedResult = decodedResult;
-    }, 100);
+    });
     this.html5Qrcode.stop();
-    this.html5Qrcode = undefined;
+    this.ngZone.run(() => {
+      this.html5Qrcode = undefined;
+    });
   }
 
   onScanError(errorMessage: string) {
