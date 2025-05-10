@@ -1,4 +1,4 @@
-import { Component, inject, NgZone, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -10,11 +10,13 @@ import {
   IonMenuButton,
   IonTitle,
   IonToolbar,
+  ModalController,
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
-import { close, scan, scanCircle } from 'ionicons/icons';
-import { Html5Qrcode, Html5QrcodeScanner } from 'html5-qrcode';
+import { scan, scanCircle } from 'ionicons/icons';
+
+import { ScanModalComponent } from './scan-modal.component';
 
 @Component({
   selector: 'app-scan',
@@ -34,121 +36,43 @@ import { Html5Qrcode, Html5QrcodeScanner } from 'html5-qrcode';
     FormsModule,
   ],
 })
-export class ScanPage implements OnInit {
-  html5Qrcode: any;
-  html5QrcodeScanner: any;
+export class ScanPage {
   scannedText: string = '';
   scannedResult: any = null;
 
-  private ngZone = inject(NgZone);
+  private modalCtrl = inject(ModalController);
 
   constructor() {
-    addIcons({ close, scan, scanCircle });
+    addIcons({ scan, scanCircle });
   }
 
-  ngOnInit() {}
-
   scan() {
-    console.log('Scan 1 button clicked!');
-
     this.scannedText = '';
     this.scannedResult = null;
 
-    this.ngZone.runOutsideAngular(() => {
-      this.html5QrcodeScanner = new Html5QrcodeScanner(
-        'reader',
-        { fps: 10, qrbox: 250 },
-        false
-      );
-
-      this.html5QrcodeScanner.render(
-        this.onScanSuccess.bind(this),
-        this.onScanError.bind(this)
-      );
-    });
+    this.openModalScan(true);
   }
 
   scan2() {
-    console.log('Scan 2 button clicked!');
-
     this.scannedText = '';
     this.scannedResult = null;
 
-    this.ngZone.runOutsideAngular(() => {
-      this.html5Qrcode = new Html5Qrcode('reader');
-      this.html5Qrcode.start(
-        { facingMode: 'environment' },
-        { fps: 10, qrbox: 250 },
-        this.onScanSuccess2.bind(this),
-        this.onScanError.bind(this)
-      );
-    });
+    this.openModalScan(false);
   }
 
-  closeScan() {
-    this.ngZone.runOutsideAngular(() => {
-      if (this.html5Qrcode) {
-        this.html5Qrcode.stop();
-        this.html5Qrcode = undefined;
-      }
-      if (this.html5QrcodeScanner) {
-        this.html5QrcodeScanner.clear();
-        this.html5QrcodeScanner = undefined;
-      }
+  async openModalScan(withUI: boolean) {
+    const modal = await this.modalCtrl.create({
+      component: ScanModalComponent,
+      componentProps: {
+        withUI: withUI,
+      },
     });
-  }
+    modal.present();
 
-  onScanSuccess(decodedText: any, decodedResult: any) {
-    // Handle on success condition with the decoded text or result.
-    console.log(`Scan result: ${decodedText}`, decodedResult);
-    this.beepScannerSound();
-    this.ngZone.run(() => {
-      this.scannedText = decodedText;
-      this.scannedResult = decodedResult;
-    });
-    this.html5QrcodeScanner.clear();
-    this.ngZone.run(() => {
-      this.html5QrcodeScanner = undefined;
-    });
-  }
-
-  onScanSuccess2(decodedText: any, decodedResult: any) {
-    // Handle on success condition with the decoded text or result.
-    console.log(`Scan result: ${decodedText}`, decodedResult);
-    this.beepScannerSound();
-    this.ngZone.run(() => {
-      this.scannedText = decodedText;
-      this.scannedResult = decodedResult;
-    });
-    this.html5Qrcode.stop();
-    this.ngZone.run(() => {
-      this.html5Qrcode = undefined;
-    });
-  }
-
-  onScanError(errorMessage: string) {
-    if (!errorMessage.includes('error = NotFoundException')) {
-      console.error(`Scan error: ${errorMessage}`);
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'scan') {
+      this.scannedText = data.scannedText;
+      this.scannedResult = data.scannedResult;
     }
-  }
-
-  beepScannerSound() {
-    const audioCtx = new AudioContext();
-
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(1000, audioCtx.currentTime);
-
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.01); // fade in
-    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1); // fade out
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 0.15); // short beep
   }
 }
