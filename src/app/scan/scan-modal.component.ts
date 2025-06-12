@@ -126,10 +126,10 @@ export class ScanModalComponent implements AfterViewInit {
   }
 
   onScanError(errorMessage: string) {
-    if (!errorMessage.includes('error = NotFoundException')) {
-      console.error(`Scan error: ${errorMessage}`);
-      this.modalCtrl.dismiss(null, 'cancel');
-    }
+    // if (!errorMessage.includes('error = NotFoundException')) {
+    //   console.error(`Scan error: ${errorMessage}`);
+    //   this.modalCtrl.dismiss(null, 'cancel');
+    // }
   }
 
   beepScannerSound() {
